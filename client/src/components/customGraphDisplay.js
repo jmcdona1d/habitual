@@ -1,7 +1,7 @@
 import React from "react";
 import DateDisplay from "./dateDisplay";
 
-export default class GraphDisplay extends React.Component {
+export default class customGraphDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
