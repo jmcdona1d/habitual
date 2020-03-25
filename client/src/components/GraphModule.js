@@ -12,8 +12,13 @@ export default class GraphDisplay extends React.Component {
           { date: "2020-01-04", count: 4 },
           { date: "2020-01-22", count: 1 },
           { date: "2020-01-30", count: 2 }
-          // ...and so on
         ]}
+        classForValue={value => {
+          if (!value) {
+            return "color-empty";
+          }
+          return `color-scale-${value.count}`;
+        }}
       />
     );
   }
