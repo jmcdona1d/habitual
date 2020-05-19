@@ -11,11 +11,12 @@ module.exports = {
         }
     },
 
-    createEntry: async function (db, entry){
+    createEntry: async function (db, data){
         try{
-            await db.query(`INSERT INTO public."Entries"(
-                id, data)
-                VALUES (${entry})`)
+            await db.query(`
+                INSERT INTO public."Entries"(
+                data)
+                VALUES ( '${data}');`)
             return true
         }
         catch(e){
