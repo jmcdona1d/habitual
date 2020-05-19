@@ -7,6 +7,8 @@ const passport = require("passport");
 const dotenv = require('dotenv');
 dotenv.config();
 const Client = require('pg').Client;
+const entryBusinessService = require('./entryBusinessService')
+
 const client = new Client({
     user: "postgres",
     password: process.env.DB_PASSWORD,
@@ -32,16 +34,16 @@ app.get("/server", (req,res) => {
     res.send({express:"Connected"})
 })
 
-app.get("/view", async(req, res)=>{
-    const rows = await readEntries()
+app.get("/entry", async(req, res)=>{
+    const rows = await entryBusinessService.readEntries(client)
     res.send(JSON.stringify(rows))
 })
 
-app.post("/add", async(req,res)=>{
+app.post("/entry", async(req,res)=>{
     let result = {}
     try{
         const reqJson = req.body;
-        await createEntry(reqJson.data)
+        await entryBusinessService.createEntry(client, reqJson.data)
         result.sucess = true
     }
     catch(e){
@@ -65,28 +67,5 @@ async function connect(){
     }
     catch(e){
         console.error(`failed to connect ${e}`)
-    }
-}
-
-async function readEntries(){
-    try{
-        const results = await client.query(`select * from public."Entries";`)
-        return results.rows
-    }
-    catch(e){
-        console.error(`Failed to add ${e}`)
-        return [];
-    }
-}
-
-async function createEntry(entry){
-    try{
-        await client.query(`INSERT INTO public."Entries"(
-            id, data)
-            VALUES (${entry})`)
-        return true
-    }
-    catch(e){
-        return false
     }
 }
