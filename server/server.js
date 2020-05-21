@@ -56,10 +56,6 @@ app.post("/entry", async(req,res)=>{
     }
 })
 
-app.get("/server", (req,res) => {
-    res.send({express:"Connected"})
-})
-
 async function connect(){
     try{
         await client.connect();
