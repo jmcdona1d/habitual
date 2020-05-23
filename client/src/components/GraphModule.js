@@ -7,7 +7,8 @@ export default class GraphDisplay extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      result: []
+      dates: [],
+      counts: []
     }
     this.getAPITest()
   }
@@ -33,18 +34,21 @@ export default class GraphDisplay extends React.Component {
     .then(response => response.text())
     .then(response => 
       {
-      console.log(response)
-      this.setState({result: response})}
+        var b = Array.from(JSON.parse(response).values()).map(a => a.date)
+        var c = Array.from(JSON.parse(response).values()).map(a => a.count)
+        console.log(c,b)
+
+      this.setState({dates:b, counts:c})}
     )
     .catch(error => console.log('error', error));
 
   }
   getData() {
-    var data = [
-      { date: "2020-01-04", count: 4 },
-      { date: "2020-01-22", count: 1 },
-      { date: "2020-01-30", count: 2 }
-    ];
+    var data = [];
+    for( var i = 0; i < this.state.dates.length; i++){
+      data[i] = {date: this.state.dates[i], count: this.state.counts[i]}
+    }
+    console.log(data)
     return data;
   }
 

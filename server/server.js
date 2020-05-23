@@ -36,7 +36,11 @@ app.get("/server", (req,res) => {
 
 app.get("/entry", async(req, res)=>{
     const rows = await entryBusinessService.readEntries(client)
-    res.send(JSON.stringify(rows))
+    res.send(JSON.stringify([
+        { date: "2020-01-04", count: 4 },
+        { date: "2020-01-22", count: 1 },
+        { date: "2020-01-30", count: 2 }
+      ]))
 })
 
 app.post("/entry", async(req,res)=>{
