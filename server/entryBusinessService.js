@@ -15,8 +15,8 @@ module.exports = {
         try{
             await db.query(`
                 INSERT INTO public."Entries"(
-                data)
-                VALUES ( '${data}');`)
+                data, date)
+                VALUES ( '${data}', (to_timestamp(${Date.now()} / 1000.0)));`)
             return true
         }
         catch(e){

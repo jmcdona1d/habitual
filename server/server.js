@@ -8,6 +8,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 const Client = require('pg').Client;
 const entryBusinessService = require('./entryBusinessService')
+const dateTime = require('moment'); //().format('YYYY-MM-DD HH:mm:ss');
+
 
 const client = new Client({
     user: "postgres",
@@ -36,11 +38,19 @@ app.get("/server", (req,res) => {
 
 app.get("/entry", async(req, res)=>{
     const rows = await entryBusinessService.readEntries(client)
-    res.send(JSON.stringify([
-        { date: "2020-01-04", count: 4 },
-        { date: "2020-01-22", count: 1 },
-        { date: "2020-01-30", count: 2 }
-      ]))
+    console.log(rows)
+
+    for(index in rows){
+        console.log(rows[index]['date'].toISOString().split('T')[0])
+        rows[index]['date'] = rows[index]['date'].toISOString().split('T')[0]
+    }
+
+    res.send(JSON.stringify(rows))
+    // res.send(JSON.stringify([
+    //     { date: "2020-01-04", count: 4 },
+    //     { date: "2020-01-22", count: 1 },
+    //     { date: "2020-01-30", count: 2 }
+    //   ]))
 })
 
 app.post("/entry", async(req,res)=>{
