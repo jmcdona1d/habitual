@@ -34,11 +34,29 @@ export default class GraphDisplay extends React.Component {
     .then(response => response.text())
     .then(response => 
       {
-        var b = Array.from(JSON.parse(response).values()).map(a => a.date)
-        var c = Array.from(JSON.parse(response).values()).map(a => a.count)
-        console.log(c,b)
+        var dates = Array.from(JSON.parse(response).values()).map(a => a.date)
+        var counts = [];
+        var datesNew = [];
+        var size = 0;
+        var same = 1;
 
-      this.setState({dates:b, counts:c})}
+        for( var i = 0; i < dates.length; i++){
+          if(i < dates.length && dates[i] == dates[i+1]){
+            i++;
+            same++;
+          }
+
+          else{
+            counts[size] = same;
+            datesNew[size] = dates[i];
+            size++;
+            same = 1;
+          }
+        }
+
+        console.log(datesNew, counts);
+
+      this.setState({dates:datesNew, counts:counts})}
     )
     .catch(error => console.log('error', error));
 
@@ -66,7 +84,6 @@ export default class GraphDisplay extends React.Component {
             return `color-scale-${value.count}`;
           }}
         />
-        <h1>A{this.state.result}</h1>
       </div>
     );
   }
