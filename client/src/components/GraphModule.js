@@ -11,6 +11,8 @@ export default class GraphDisplay extends React.Component {
       counts: []
     }
     this.getAPITest()
+    this.getData = this.getData.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   getStartDate() {
@@ -70,6 +72,29 @@ export default class GraphDisplay extends React.Component {
     return data;
   }
 
+  handleClick(e) {
+    e.preventDefault();
+    console.log('The link was clicked.');
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow',
+      body: JSON.stringify({'data':"test"})
+    }
+
+    fetch("/entry", requestOptions)
+    .then(response => console.log(response))
+    .catch(error => console.log('error', error));
+
+    this.getData()
+
+  }
+
+
   render() {
     return (
       <div>
@@ -84,6 +109,7 @@ export default class GraphDisplay extends React.Component {
             return `color-scale-${value.count}`;
           }}
         />
+        <button onClick={this.handleClick}>Log activity</button>
       </div>
     );
   }

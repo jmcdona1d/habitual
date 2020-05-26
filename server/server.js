@@ -38,10 +38,8 @@ app.get("/server", (req,res) => {
 
 app.get("/entry", async(req, res)=>{
     const rows = await entryBusinessService.readEntries(client)
-    console.log(rows)
 
     for(index in rows){
-        console.log(rows[index]['date'].toISOString().split('T')[0])
         rows[index]['date'] = rows[index]['date'].toISOString().split('T')[0]
     }
 
